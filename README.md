@@ -15,10 +15,8 @@ The project is fully containerized using **Docker**, making it portable and read
 ---
 
 ## 🖼️ Screenshots
-*(Add your screenshots here – e.g., FastAPI UI form, Swagger docs, or prediction results.)*
+![Uploading image.png…]()
 
-Example:  
-![EPP Predictor Screenshot](assets/demo.png)
 
 ---
 
