@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <header class="hero">
+    <h1>Easy Payment Plan (EPP) Predictor</h1>
+    <p class="tagline">
+      This app uses a weighted ensemble of 3 classification algorithms (Random Forest, XGBoost & LightGBM) to predict whether a particular credit-card customer will opt for EPP or not!
+    </p>
+  </header>
+
+  <div class="content">
+    <h3>Enter customer details below:</h3>
+
+    <form method="POST" action="/predict">
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="CREDIT_LIMIT">Credit Limit ($):</label>
+          <input type="number" id="CREDIT_LIMIT" name="CREDIT_LIMIT" step="any" required>
+        </div>
+
+        <div class="form-row">
+          <label for="BALANCE">Balance ($):</label>
+          <input type="number" id="BALANCE" name="BALANCE" step="any" required>
+        </div>
+        
+        <div class="form-row">
+          <label for="UTILIZATION">Utilization (%):</label>
+          <!-- readonly so user can’t edit -->
+        <input type="text" id="UTILIZATION" name="UTILIZATION" readonly>
+        </div>
+        
+        <div class="form-row">
+          <label for="PURCHASES">Purchase Amount ($):</label>
+          <input type="number" id="PURCHASES" name="PURCHASES" step="any" required>
+        </div>
+
+        <div class="form-row">
+          <label for="CASH_ADVANCE">Cash Amount ($):</label>
+          <input type="number" id="CASH_ADVANCE" name="CASH_ADVANCE" step="any" required>
+        </div>
+
+        <div class="form-row">
+          <label for="PAYMENTS">Payment Amount ($):</label>
+          <input type="number" id="PAYMENTS" name="PAYMENTS" step="any" required>
+        </div>
+
+        <div class="form-row">
+          <label for="TENURE">Tenure (in months):</label>
+          <input type="number" id="TENURE" name="TENURE" step="1" min="0" required>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">PREDICT</button>
+      </div>
+    </form>
+    
+    {% if result is not none %}
+      <div class="prediction">
+      <p><b>Prediction:</b> {{ result }}</p>
+      <p><b>Probability:</b> {{ probability }}</p>
+      </div>
+    {% endif %}
+
+  <script>
+
+function updateUtilization() {
+  let creditLimit = parseFloat(document.getElementById("CREDIT_LIMIT").value) || 0;
+  let balance = parseFloat(document.getElementById("BALANCE").value) || 0;
+
+  let utilization = 0;
+  if (creditLimit > 0) {
+    utilization = (balance / creditLimit) * 100;
+  }
+
+  document.getElementById("UTILIZATION").value = utilization.toFixed(2) + "%";
+
+  // Set max allowed balance = credit limit
+  document.getElementById("BALANCE").setAttribute("max", creditLimit);
+}
+document.getElementById("CREDIT_LIMIT").addEventListener("input", updateUtilization);
+document.getElementById("BALANCE").addEventListener("input", updateUtilization);
+</script>
+</body>
+</html>
