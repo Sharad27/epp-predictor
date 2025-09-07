@@ -15,8 +15,7 @@ The project is fully containerized using **Docker**, making it portable and read
 ---
 
 ## 🖼️ Screenshots
-![Uploading image.png…]()
-
+![Front-end UI](images/front-end.png)
 
 ---
 
